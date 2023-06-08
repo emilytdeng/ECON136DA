@@ -16,7 +16,6 @@ def generate_resume_scores(applicants):
 # truncates the dictionary applicants to a top k% based on resume scores
 def truncate(scores, keep):
     k = math.floor(keep * len(scores)) # how many applicants we will keep
-    print("k", k)
 
     sorted_res_scores = sorted(scores.items(), key=lambda item: item[1], reverse=True) # sort from highest to lowest
     sorted_res_scores = sorted_res_scores[:k] # only keep top k applicants based on their resume scores

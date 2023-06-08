@@ -13,18 +13,19 @@ def simple_job_match() -> None:
     applicants_list = ["emily", "shaurya", "melina", "ellie", "lea", "logan", "natalia", "riley", "maya", "lindsay"] 
     firms_list = ["Vain & Company", "VCG", "McKidney & Company"]
 
-    # generate resume scores for each applicant (all firms score resumes identically)
-    res_scores = generate_resume_scores(applicants_list)
-    print("res_scores", res_scores)
-    # based on resume scores, only keep top x percent of applicants
-    top_scores = truncate(res_scores, .4)
-    print("top scores", top_scores)
+   
+    res_scores = generate_resume_scores(applicants_list) # generate resume scores for each applicant (all firms score resumes identically)
+    print("resume scores", res_scores) 
+    top_scores = truncate(res_scores, .4) # based on resume scores, only keep top x percent of applicants
+    print("top resume scores \n", top_scores)
     top_applicants = list(top_scores.keys())
-    print("top applicants", top_applicants)
-    firms_preferences = convert_to_preferences(top_applicants, generate_cumulative_scores(firms_list, top_scores))
-    print("firms preferences", firms_preferences)
-    applicants_preferences = applicants_rank_firms(top_applicants, firms_list, .0001)
-    print("applicants preferences", applicants_preferences)
+    print("top applicants \n", top_applicants)
+    cum_scores = generate_cumulative_scores(firms_list, top_scores) # interview score, which is sampled from a normal distribution, is added to resume score
+    print("cumulative scores of top applicants (resume + interview) \n", cum_scores)
+    firms_preferences = convert_to_preferences(top_applicants, cum_scores)
+    print("firms' preferences \n", firms_preferences) # a dictionary of all the firms' preferences of applicants
+    applicants_preferences = applicants_rank_firms(top_applicants, firms_list, 1)
+    print("applicants' preferences \n", applicants_preferences) # a dictionary of all the applicants' preferences of firms
 
     applicants_df, firms_df = create_dataframes(
         applicants_list=top_applicants,
@@ -34,7 +35,7 @@ def simple_job_match() -> None:
     )
 
     # Run the algorithm
-    firms_quota = {"Vain & Company": 2, "VCG": 9, "McKidney & Company": 1}
+    firms_quota = {"Vain & Company": 2, "VCG": 2, "McKidney & Company": 1}
     matches = deferred_acceptance(
         applicants_df=applicants_df, firms_df=firms_df, firms_quota=firms_quota
     )

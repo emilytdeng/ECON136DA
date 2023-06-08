@@ -17,14 +17,11 @@ def applicants_rank_firms(applicants, firms, r):
     if r == 1:
         # applicants will have dissimilar rankings of firms
         weights = [1 / F] * F
-        print("weights1", weights)
     else:
         weights = []
         rx = (r - 1) / (r ** F - 1)
         for i in range(F):
             weights.append(rx * (r ** i))
-        print("weights", weights)
-
     # returns a list, xP, containing each applicant's rankings of the firms
     for i in range(N):
         app_name = applicants[i]
