@@ -1,7 +1,6 @@
 from scipy.stats import norm
 import random
 import math
-import numpy as np
 
 # randomly generates a resume score for each applicant from 1-100
 def generate_resume_scores(applicants):
